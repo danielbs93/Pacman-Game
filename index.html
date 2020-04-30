@@ -1,87 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-	<meta charset="UTF-8">
-	<link rel="stylesheet" href="style.css">
-    <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
-    <script src = "PacmanApp.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-	
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
+  <script src="PacmanApp.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
 </head>
+
 <body>
-    
+
   <div class="wrapper">
-  <div class="left">
-      <h3>Welcome to Pacman Game</h3>   
-        <img src="pacman.jpg" alt="pacman_image">
-  </div>
-  <div class="right">
-    <div class="tabs">
-      <ul>
-        <li class="register_li">Register</li>
-        <li class="login_li">login</li>
-      </ul>
+    <div class="left">
+      <h3>Welcome to Pacman Game</h3>
+      <img src="pacman.jpg" alt="pacman_image">
+      <div id="About" class="about">
+        <!-- Trigger the modal with a button -->
+        <button type="btn" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">About</button>
+      </div>
     </div>
-    
-    <div class="register" >
-      <div class="input_field">
-        <input type="text" id="userName" placeholder="Username" class="input">
+    <div class="right">
+      <div class="tabs">
+        <ul>
+          <li class="register_li">Register</li>
+          <li class="login_li">login</li>
+        </ul>
       </div>
-      <div class="input_field">
-        <input type="text" id="email" placeholder="E-mail" class="input">
-      </div>
-      <div class="class input_field">
+
+      <div class="register">
+        <div class="input_field">
+          <input type="text" id="userName" placeholder="Username" class="input">
+        </div>
+        <div class="input_field">
+          <input type="text" id="email" placeholder="E-mail" class="input">
+        </div>
+        <div class="class input_field">
           <input type="text" id="firstName" placeholder="First Name" class="input">
-      </div>
-      <div class="class input_field">
+        </div>
+        <div class="class input_field">
           <input type="text" id="lastName" placeholder="Last Name" class="input">
+        </div>
+        <div class="input_field">
+          <input type="password" id="password" placeholder="Password" class="input">
+        </div>
+        <div class="input_field">
+          <input type="date" id="birthday" name="birthday" class="input">
+        </div>
+        <div class="btn" onclick="registerUser()"><a href="#">Register</a></div>
       </div>
-      <div class="input_field">
-        <input type="password" id="password" placeholder="Password" class="input">
+
+      <div class="login">
+        <div class="input_field">
+          <input type="text" id="logInUserName" placeholder="User Name" class="input">
+        </div>
+        <div class="input_field">
+          <input type="password" id="logInPassword" placeholder="Password" class="input">
+        </div>
+        <div class="btn" onclick="logIn()"><a href="#">Login</a></div>
       </div>
-      <div class="input_field">
-        <input type="date" id="birthday" name="birthday" class="input">
-      </div>
-      <div class="btn" onclick="registerUser()"><a href="#">Register</a></div>
+
     </div>
-    
-    <div class="login" >
-      <div class="input_field">
-        <input type="text" id="logInUserName" placeholder="User Name" class="input">
-      </div>
-      <div class="input_field">
-        <input type="password" id="logInPassword" placeholder="Password" class="input">
-      </div>
-      <div class="btn" onclick="logIn()"><a href="#">Login</a></div>
-    </div>
-    
   </div>
-</div>
-<div id="About" class="about">
-  <!-- Trigger the modal with a button -->
-  <button type="btn" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">About</button>
   <!-- Modal -->
   <div class="modal fade" id="myModal" role="dialog">
-      <div class="modal-dialog">
-      
+    <div class="modal-dialog">
+
       <!-- Modal content-->
       <div class="modal-content">
-          <div class="modal-header">
+        <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
-          </div>
-          <div class="modal-body">
+          <h4 class="modal-title">About</h4>
+        </div>
+        <div class="modal-body">
           <p>Some text in the modal.</p>
-          </div>
-          <div class="modal-footer">
+        </div>
+        <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          </div>
+        </div>
       </div>
-  </div> 
+    </div>
   </div>
+  <div class="settingsPage animate" onfocus="displayValue()" >
+      <!--my Modal content-->
+    <div class="my-modal-content">
+      <div class="my-modal-header">
+        <h4 class="my-modal-title">Settings</h4>
+      </div>
+      <div class="my-modal-body">
+        <div class="keys">
+          <h2 class="settingsLabels">Keys to play:</h2>
+          <input type="text" id="keyUp" placeholder="Up" class="input">
+          <input type="text" id="keyDown" placeholder="Down" class="input">
+          <input type="text" id="keyLeft" placeholder="Left" class="input">
+          <input type="text" id="keyRight" placeholder="Right" class="input">
+        </div>
+        <h2 class="settingsLabels">Number of balls:</h2>
+        <div class="slidecontainer">
+          <input type="range" min="50" max="90" value="50" class="slider" id="myRange">
+          Value: <span id="numOfBalls"></span>
+        </div>
+      </div>
+      <div class="my-modal-footer">
+        <ul>
+        <li><button type="button" class="settingsButton" data-dismiss="modal">Generate Random</button></li>
+        <li><button type="button" class="settingsButton" data-dismiss="modal">Start Game</button></li>
+        </ul>
+      </div>
+    </div>
+  
 </div>
 </body>
+
 </html>
