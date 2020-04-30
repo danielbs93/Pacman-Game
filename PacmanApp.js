@@ -1,5 +1,5 @@
 //Fields
-var context = canvas.getContext("2d");
+//var context = canvas.getContext("2d");
 var shape=new Object();
 var board;
 var score;

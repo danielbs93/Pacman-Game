@@ -14,6 +14,14 @@ body{
   background: #8d8c8c;
 }
 
+.about .btn {
+  display:block;
+  top: 40%;
+  left: 26%;
+  position:relative;
+  transform: translate(50%,1100%);
+}
+
 .wrapper{
   display: flex;
   max-width: 560px;
@@ -107,6 +115,4 @@ body{
   font-size: 14px;
 }
 
-.about {
-  
-}
+
