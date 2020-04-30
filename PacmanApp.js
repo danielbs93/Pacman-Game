@@ -1,5 +1,28 @@
 //Fields
-var context;
+var context = canvas.getContext("2d");
+var shape=new Object();
+var board;
+var score;
+var pac_color;
+var start_time;
+var time_elapsed;
+var interval;
+
+//Game timer till end defined by user on the setting page
+var timeForGame;//In seconds
+
+//Current User
+var currentUserName;
+
+//balls types
+var ballSmall;//5 points - 60%
+var ballMedium;//15 points - 30%
+var ballLarge;//25 points - 10%
+
+//Monsters
+var numOfMonsters;//from settings
+
+
 
 
 $(document).ready(function(){
@@ -153,6 +176,7 @@ function logIn() {
         }
     }
     alert("You have signed in successfully");
+    currentUserName = userName;
     $(".wrapper").hide();
     return true;
 }
