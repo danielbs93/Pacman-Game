@@ -25,7 +25,7 @@ var numOfMonsters;//from settings
 //test
 
 $(document).ready(function(){
-    
+    $(".settingsPage").hide();
     $(".login").hide();
     $(".register_li").addClass("active");
 
@@ -177,5 +177,16 @@ function logIn() {
     alert("You have signed in successfully");
     currentUserName = userName;
     $(".wrapper").hide();
+    $(".settingsPage").show();
+    $(".settingsPage").focus();
     return true;
+}
+
+function displayValue() {
+    var slider = document.getElementById("myRange");
+    var outputSlider = document.getElementById("numOfBalls");
+    outputSlider.innerHTML = slider.value;
+    slider.oninput = function() {
+        outputSlider.innerHTML = this.value;
+    }
 }
