@@ -22,6 +22,7 @@ var ballLarge;//25 points - 10%
 //Monsters
 var numOfMonsters;//from settings
 
+//More fields
 
 
 
