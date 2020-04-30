@@ -9,7 +9,7 @@ var time_elapsed;
 var interval;
 
 //Game timer till end defined by user on the setting page
-var timeForGame;//In seconds
+var timeForGame;//In seconds 
 
 //Current User
 var currentUserName;
