@@ -193,6 +193,15 @@ function logIn() {
     return true;
 }
 
+function displayValue() {
+    var slider = document.getElementById("myRange");
+    var outputSlider = document.getElementById("numOfBalls");
+    outputSlider.innerHTML = slider.value;
+    slider.oninput = function() {
+        outputSlider.innerHTML = this.value;
+    }
+}
+
 /**
  * Play a game after selecting the game settings 
  */
