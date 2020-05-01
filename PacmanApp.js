@@ -52,8 +52,10 @@ $(document).ready(function(){
     //     $(".login").hide();
     // })
     $(".wrapper").hide();
-    $(".about").hide();
-    $(".gamePage").show();
+    $(".settingsPage").hide()
+    $(".register").hide();
+    $(".login").hide();
+    $(".game_page").show();
 });
 
 //Defualt character
@@ -332,3 +334,4 @@ function UpdatePosition() {
         Draw();
     }
 }
+
