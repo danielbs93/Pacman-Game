@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-	
 </head>
 <body>
     <div id="About" class="about">
@@ -18,7 +17,6 @@
         <!-- Modal -->
         <div class="modal fade" id="myModal" role="dialog">
             <div class="modal-dialog">
-            
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
@@ -79,8 +77,40 @@
       </div>
       <div class="btn" onclick="logIn()"><a href="#">Login</a></div>
     </div>
-    
   </div>
+</div>
+
+<div class="gamePage">
+  <table>
+    <tr>
+      <td>
+        <div class="player_name">
+          Name: <input id="lblName" type="text" /> 
+        </div>
+      </td>
+      <td>
+        <div class="player_score">
+        Score: <input id="lblScore" type="text" /> 
+        </div>
+      </td>
+      <td>
+        <div class="game_time">
+          Time: <input id="lblTime" type="text" />
+        </div>
+      </td>
+      <td>
+        <div class="game_life">
+          Life: <input id="lbllife" type="text" />
+        </div>
+      </td>
+      <td>
+        <div class="btn" onclick="Start()"><a href="#">Start to play</a></div>
+      </td>
+  </tr> 
+  </table>
+  <td>
+    <canvas class="canvas" id="canvas2" height="675" width="700"></canvas>
+  </td>
 </div>
 </body>
 </html>
