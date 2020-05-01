@@ -233,3 +233,29 @@ body{
   to {transform: scale(1)}
 }
 
+.gamePage{
+  background:antiquewhite;
+}
+
+.gamePage .player_name,
+.gamePage .player_score,
+.gamePage .game_time,
+.gamePage .game_life{
+  margin-top: -5px;
+  background: #494f57;
+  padding: 10px;
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  font-weight: bold;
+}
+
+
+.gamePage .btn a{
+  background: #494f57;
+  padding: 10px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  font-weight: bold;
+}

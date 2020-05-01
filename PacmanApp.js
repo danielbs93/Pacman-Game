@@ -29,10 +29,30 @@ var ballLarge;//25 points - 10%
 //Monsters
 var numOfMonsters;//from settings
 
+
+
+
+
+
+
+//Game timer till end defined by user on the setting page
+var timeForGame;//In seconds
+
+//Current User
+var currentUserName;
+
+//balls types
+var ballSmall;//5 points - 60%
+var ballMedium;//15 points - 30%
+var ballLarge;//25 points - 10%
+
+//Monsters
+var numOfMonsters;//from settings
+
 //test
 
 $(document).ready(function(){
-    // $(".settingsPage").hide();
+    
     // $(".login").hide();
     // $(".register_li").addClass("active");
 
