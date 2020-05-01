@@ -14,6 +14,7 @@
 </head>
 
 <body>
+
   <div class="wrapper">
     <div class="left">
       <h3>Welcome to Pacman Game</h3>
@@ -112,6 +113,38 @@
       </div>
     </div>
   
+</div>
+<div class="gamePage">
+  <table>
+    <tr>
+      <td>
+        <div class="player_name">
+          Name: <input id="lblName" type="text" /> 
+        </div>
+      </td>
+      <td>
+        <div class="player_score">
+        Score: <input id="lblScore" type="text" /> 
+        </div>
+      </td>
+      <td>
+        <div class="game_time">
+          Time: <input id="lblTime" type="text" />
+        </div>
+      </td>
+      <td>
+        <div class="game_life">
+          Life: <input id="lbllife" type="text" />
+        </div>
+      </td>
+      <td>
+        <div class="btn" onclick="Start()"><a href="#">Start to play</a></div>
+      </td>
+  </tr> 
+  </table>
+  <td>
+    <canvas class="canvas" id="canvas2" height="675" width="700"></canvas>
+  </td>
 </div>
 </body>
 
