@@ -15,8 +15,22 @@ var color3;
 
 
 
+//Number of food/balls
+var numOfBalls;
+
+//food/balls color
+var ballColor1;
+var ballColor2;
+var ballColor3;
+
+//Keys for playing
+var keyUp;
+var keyDown;
+var keyLeft;
+var keyRight;
+
 //Game timer till end defined by user on the setting page
-var timeForGame;//In seconds
+var timeForGame;//In seconds 
 
 //Current User
 var currentUserName;
@@ -26,55 +40,32 @@ var ballSmall;//5 points - 60%
 var ballMedium;//15 points - 30%
 var ballLarge;//25 points - 10%
 
-//Monsters
+//Number of Monsters
 var numOfMonsters;//from settings
 
-
-
-
-
-
-
-//Game timer till end defined by user on the setting page
-var timeForGame;//In seconds
-
-//Current User
-var currentUserName;
-
-//balls types
-var ballSmall;//5 points - 60%
-var ballMedium;//15 points - 30%
-var ballLarge;//25 points - 10%
-
-//Monsters
-var numOfMonsters;//from settings
-
-//test
 
 $(document).ready(function(){
-    
-    // $(".login").hide();
-    // $(".register_li").addClass("active");
 
-    // $(".login_li").click(function(){
-    //     $(this).addClass("active");
-    //     $(".register_li").removeClass("active");
-    //     $(".login").show();
-    //     $(".register").hide();
-
-    // })
-
-    // $(".register_li").click(function(){
-    //     $(this).addClass("active");
-    //     $(".login_li").removeClass("active");
-    //     $(".register").show();
-    //     $(".login").hide();
-    // })
-    $(".wrapper").hide();
-    $(".settingsPage").hide()
-    $(".register").hide();
+    $(".gamePage").hide();
+    $(".settingsPage").hide();
     $(".login").hide();
-    $(".game_page").show();
+    $(".register_li").addClass("active");
+
+    $(".login_li").click(function(){
+        $(this).addClass("active");
+        $(".register_li").removeClass("active");
+        $(".login").show();
+        $(".register").hide();
+
+    })
+
+    $(".register_li").click(function(){
+        $(this).addClass("active");
+        $(".login_li").removeClass("active");
+        $(".register").show();
+        $(".login").hide();
+    })
+
 });
 
 //Defualt character
@@ -100,7 +91,7 @@ function registerUser() {
         email: document.getElementById("email").value,
         birthday: document.getElementById("birthday").value
     };
-   
+
     if (!checkFieldsForRegisteration())
     {
         return false;
@@ -136,7 +127,6 @@ function checkFieldsForRegisteration()
 
     //Password construct from letters and numbers with min length of 6
     var password = document.getElementById("password");
-    var letters = /^[a-zA-Z]/;
     if(password.value.length < 6) {
         alert("Password must contain at least 6 characters");
         return false;
@@ -157,7 +147,7 @@ function checkFieldsForRegisteration()
 
     //First name construct from letters only
     var firstName = document.getElementById("firstName");
-        if(!firstName.value.match(letters))
+        if(!firstName.value.match(/^[a-zA-Z]+$/))
         {
             alert("Please fill first name with letters only");
             document.getElementById("firstName").focus();
@@ -166,7 +156,7 @@ function checkFieldsForRegisteration()
 
         //Last name construct from letters only
     var lastName = document.getElementById("lastName");
-        if(!lastName.value.match(letters))
+        if(!lastName.value.match(/^[a-zA-Z]+$/))
         {
             alert("Please fill last name with letters only");
             document.getElementById("lastName").focus();
@@ -214,6 +204,10 @@ function logIn() {
     return true;
 }
 
+/**
+ * This function responsible for the range slider on the settings page
+ * How many balls/food to create for the game
+ */
 function displayValue() {
     var slider = document.getElementById("myRange");
     var outputSlider = document.getElementById("numOfBalls");
@@ -221,6 +215,94 @@ function displayValue() {
     slider.oninput = function() {
         outputSlider.innerHTML = this.value;
     }
+}
+
+/**
+ * This function called by "Generate Random" button in the settings page
+ * This fuction responsible for generating random values for the configurations of the game
+ */
+function randomConfigurations() {
+    //Keyboard keys
+    keyUp = new Object();
+    keyDown = new Object();
+    keyLeft = new Object();
+    keyRight = new Object();
+    keyUp.keyCode = 38;
+    keyDown.keyCode = 40;
+    keyLeft.keyCode = 37;
+    keyRight.keyCode = 39;
+
+    //Number of balls/food
+    numOfBalls = 50;
+
+    //food/balls colors
+    ballColor1 = document.getElementById("ball1").value;//red - 60%
+    ballColor2 = document.getElementById("ball2").value;//blue - 30%
+    ballColor3 = document.getElementById("ball3").value;//green - 10%
+
+    //Game Time
+    timeForGame = 60;
+
+    //Number of monsters
+    numOfMonsters = 2;
+    $(".settingsPage").hide();
+    $(".gamePage").show();
+}
+
+/**
+ * This function called by "Start Game" button in the settings page
+ * This function responsible for gathering all inputs fields assigned by the user and define them
+ */
+function setGameConfigurations() {
+    //Keyboard keys
+    keyUp = document.getElementById("keyUp").value;
+    keyDown = document.getElementById("keyDown").value;
+    keyLeft = document.getElementById("keyLeft").value;
+    keyRight = document.getElementById("keyRight").value;
+
+    //Number of balls/food
+    numOfBalls = document.getElementById("myRange").value;
+
+    //food/balls colors
+    ballColor1 = document.getElementById("ball1").value;
+    ballColor2 = document.getElementById("ball2").value;
+    ballColor3 = document.getElementById("ball3").value;
+
+    //Game Time
+    timeForGame = document.getElementById("timeForGame").value;
+
+    //Number of monsters
+    numOfMonsters = document.getElementById("numOfMonsters").value;
+
+    //Valdiating fields
+    if (keyUp.length == 0 && keyDown.length == 0 && keyLeft.length == 0 && keyRight.length == 0) {
+        keyUp = new Object();
+        keyDown = new Object();
+        keyLeft = new Object();
+        keyRight = new Object();
+        keyUp.keyCode = 38;
+        keyDown.keyCode = 40;
+        keyLeft.keyCode = 37;
+        keyRight.keyCode = 39;
+    }
+    else {
+    if (!(keyUp.length != 0 && keyDown.length != 0 && keyLeft.length != 0 && keyRight.length != 0)) {
+                alert("You must fill all required fields to start the game or press the 'Generate Random' button");
+                return false;
+        }
+    }
+    if (numOfBalls.length == 0 || timeForGame.length == 0 || numOfMonsters.length == 0) {
+        alert("You must fill all required fields to start the game or press the 'Generate Random' button");
+        return false;
+    }
+    if (timeForGame < 60) {
+        alert("You must choose playing time longer than 60 seconds, please try again");
+        return false;
+    }
+    debugger;
+    $(".settingsPage").hide();
+    $(".gamePage").show();
+    return true;
 }
 
 /**
