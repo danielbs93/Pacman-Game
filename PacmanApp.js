@@ -436,7 +436,7 @@ function Draw(direct) {
     lblScore.value = score;
     lblTime.value = time_elapsed;
     lblLife.value = pacLife;
-    // lblName = document.getElementById("firstName");
+    lblName = currentUserName;
     for (var i = 0; i < 10; i++) {
         for (var j = 0; j < 10; j++) {
             var center = new Object();
