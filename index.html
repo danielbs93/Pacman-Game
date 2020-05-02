@@ -89,11 +89,11 @@
       <!--my Modal content-->
     <div class="my-modal-content">
       <div class="my-modal-header">
-        <h4 class="my-modal-title">Settings</h4>
+        <h1 data-text="Game Settings" class="my-modal-title"><span>Game Settings</span></h1>
       </div>
       <div class="my-modal-body">
         <div class="keys">
-          <h2 class="settingsLabels">Keys to play:</h2>
+          <h2 class="settingsLabels">Keys to play:  <label class="labelBall" style="color: red;">  **by default the keys will be keyboard arrows</label></h2> 
           <input type="text" id="keyUp" placeholder="Up" class="input">
           <input type="text" id="keyDown" placeholder="Down" class="input">
           <input type="text" id="keyLeft" placeholder="Left" class="input">
@@ -102,13 +102,30 @@
         <h2 class="settingsLabels">Number of balls:</h2>
         <div class="slidecontainer">
           <input type="range" min="50" max="90" value="50" class="slider" id="myRange">
-          Value: <span id="numOfBalls"></span>
+          <strong>Value: </strong><span id="numOfBalls"></span>
         </div>
+        <div class="ballsColorsPicker">
+          <label class="settingsLabels">Select the first food color:  </label>
+          <input type="color" id="ball1" name="favcolor" value="#ff0000">  <label class="labelBall">   5 points</label><br>
+          <label class="settingsLabels">Select the second food color:  </label>
+          <input type="color" id="ball2" name="favcolor" value="#3F51B5">  <label class="labelBall">   15 points</label><br>
+          <label class="settingsLabels">Select the third food color:  </label>
+          <input type="color" id="ball3" name="favcolor" value="#06ec17">  <label class="labelBall">   25 points</label><br>
+        </div>
+        <label class="settingsLabels"> Game Time:  </label>
+        <input type="text" id="timeForGame" placeholder="min 60 seconds"> <label class="labelBall">  seconds</label></input><br>
+        <label class="settingsLabels" >Choose how much monsters you want:  </label>
+        <select id="numOfMonsters">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+        </select>
       </div>
       <div class="my-modal-footer">
         <ul>
-        <li><button type="button" class="settingsButton" data-dismiss="modal">Generate Random</button></li>
-        <li><button type="button" class="settingsButton" data-dismiss="modal">Start Game</button></li>
+        <li><button type="button" onclick="randomConfigurations()" class="settingsButton" data-dismiss="modal">Generate Random</button></li>
+        <li><button type="button" onclick="setGameConfigurations()" class="settingsButton" data-dismiss="modal">Start Game</button></li>
         </ul>
       </div>
     </div>
