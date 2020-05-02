@@ -370,4 +370,13 @@ body{
   font-size: medium;
 }
 
+.canvasWrapper {
+  padding:5px;
+  border: 5px solid #f90a0a;
+}
+
+.gameRowDetails {
+  padding: 2px;
+  border: 2px solid grey;
+}
 

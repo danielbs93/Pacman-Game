@@ -26,10 +26,10 @@ var ballColor2;
 var ballColor3;
 
 //Keys for playing
-var keyUp;
-var keyDown;
-var keyLeft;
-var keyRight;
+var keyUp = new Object(),
+    keyDown = new Object(),
+    keyLeft = new Object(),
+    keyRight = new Object();
 
 //Game timer till end defined by user on the setting page
 var timeForGame;//In seconds 
@@ -48,25 +48,27 @@ var numOfMonsters;//from settings
 
 $(document).ready(function(){
 
-    $(".gamePage").hide();
-    $(".settingsPage").hide();
-    $(".login").hide();
-    $(".register_li").addClass("active");
+    // $(".gamePage").hide();
+    // $(".settingsPage").hide();
+    // $(".login").hide();
+    // $(".register_li").addClass("active");
 
-    $(".login_li").click(function(){
-        $(this).addClass("active");
-        $(".register_li").removeClass("active");
-        $(".login").show();
-        $(".register").hide();
+    // $(".login_li").click(function(){
+    //     $(this).addClass("active");
+    //     $(".register_li").removeClass("active");
+    //     $(".login").show();
+    //     $(".register").hide();
 
-    })
+    // })
 
-    $(".register_li").click(function(){
-        $(this).addClass("active");
-        $(".login_li").removeClass("active");
-        $(".register").show();
-        $(".login").hide();
-    })
+    // $(".register_li").click(function(){
+    //     $(this).addClass("active");
+    //     $(".login_li").removeClass("active");
+    //     $(".register").show();
+    //     $(".login").hide();
+    // })
+    $(".wrapper").hide();
+    $(".settingsPage").show();
 
 });
 
@@ -225,14 +227,10 @@ function displayValue() {
  */
 function randomConfigurations() {
     //Keyboard keys
-    keyUp = new Object();
-    keyDown = new Object();
-    keyLeft = new Object();
-    keyRight = new Object();
-    keyUp.keyCode = 38;
-    keyDown.keyCode = 40;
-    keyLeft.keyCode = 37;
-    keyRight.keyCode = 39;
+    keyUp = 38;
+    keyDown = 40;
+    keyLeft = 37;
+    keyRight = 39;
 
     //Number of balls/food
     numOfBalls = 50;
@@ -251,16 +249,25 @@ function randomConfigurations() {
     $(".gamePage").show();
 }
 
+/* Settings Keys by user choice */
+function setKeyCodeUp(event) {
+    keyUp = event.keyCode;
+}
+function setKeyCodeDown(event) {
+    keyDown = event.keyCode;
+}
+function setKeyCodeLeft(event) {
+    keyLeft = event.keyCode;
+}
+function setKeyCodeRight(event) {
+    keyRight = event.keyCode;
+}
+
 /**
  * This function called by "Start Game" button in the settings page
  * This function responsible for gathering all inputs fields assigned by the user and define them
  */
 function setGameConfigurations() {
-    //Keyboard keys
-    keyUp = document.getElementById("keyUp").value;
-    keyDown = document.getElementById("keyDown").value;
-    keyLeft = document.getElementById("keyLeft").value;
-    keyRight = document.getElementById("keyRight").value;
 
     //Number of balls/food
     numOfBalls = document.getElementById("myRange").value;
@@ -278,14 +285,10 @@ function setGameConfigurations() {
 
     //Valdiating fields
     if (keyUp.length == 0 && keyDown.length == 0 && keyLeft.length == 0 && keyRight.length == 0) {
-        keyUp = new Object();
-        keyDown = new Object();
-        keyLeft = new Object();
-        keyRight = new Object();
-        keyUp.keyCode = 38;
-        keyDown.keyCode = 40;
-        keyLeft.keyCode = 37;
-        keyRight.keyCode = 39;
+        keyUp = 38;
+        keyDown = 40;
+        keyLeft = 37;
+        keyRight = 39;
     }
     else {
     if (!(keyUp.length != 0 && keyDown.length != 0 && keyLeft.length != 0 && keyRight.length != 0)) {
@@ -301,7 +304,6 @@ function setGameConfigurations() {
         alert("You must choose playing time longer than 60 seconds, please try again");
         return false;
     }
-    debugger;
     $(".settingsPage").hide();
     $(".gamePage").show();
     return true;
@@ -315,13 +317,13 @@ function Start() {
     board = new Array()
     score = 0;
     pac_color="yellow";
-    var cnt = 100;
-    var food_remain =85;
+    var cnt = 375;
+    var food_remain = 100// =numOfBalls;
     var pacman_remain = 1;
     start_time= new Date();
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < 25; i++) {
         board[i] = new Array();
-        for (var j = 0; j < 10; j++) {
+        for (var j = 0; j < 15; j++) {
             if ((i==8 && j==1) || (i==2 && j==7))
             {
                 board[i][j] = 4;
@@ -374,19 +376,19 @@ function findRandomEmptyCell(board){
 
 function GetKeyPressed() {
     //Up
-    if (keysDown[38]) {
+    if (keysDown[keyUp]) {
         return 1;
     }
     //Down
-    if (keysDown[40]) { 
+    if (keysDown[keyDown]) { 
         return 2;
     }
     //Left
-    if (keysDown[37]) { 
+    if (keysDown[keyLeft]) { 
         return 3;
     }
     //Right
-    if (keysDown[39]) { 
+    if (keysDown[keyRight]) { 
         return 4;
     }
 }
@@ -402,26 +404,26 @@ function Draw(direct) {
     canvas.width=canvas.width;
     lblScore.value = score;
     lblTime.value = time_elapsed;
-    for (var i = 0; i < 10; i++) {
-        for (var j = 0; j < 10; j++) {
+    for (var i = 0; i < 25; i++) {//---->width = 1200
+        for (var j = 0; j < 15; j++) {//---->height = 654
             var center = new Object();
-            center.x = i * 60 + 30;
-            center.y = j * 60 + 30;
+            center.x = i * 48 + 24;
+            center.y = j * 43 + 21.5;
             if (board[i][j] == 2) {  
-                context.drawImage(pac, center.x -15,center.y-15);
+                context.drawImage(pac, center.x-20,center.y-20);
             } else if (board[i][j] == 1) {
                 context.beginPath();
                 context.arc(center.x, center.y, 3.5, 0, 2 * Math.PI); // half circle
                 context.fillStyle = "black"; //color 
                 context.fill();
-            }else if (board[i][j] == 4) {
+            }else if (board[i][j] == 4) {//vertical wall
                 context.beginPath();
-                context.rect(center.x-15, center.y-15, 30, 60);
+                context.rect(center.x-6.6, center.y-6.6, 15, 60);
                 context.fillStyle = "grey"; //color 
                 context.fill();
-            }else if (board[i][j] == 5) {
+            }else if (board[i][j] == 5) {//horizontal wall
                 context.beginPath();
-                context.rect(center.x-15, center.y-15, 60, 30);
+                context.rect(center.x-6.6, center.y-6.6, 60, 15);
                 context.fillStyle = "grey"; //color 
                 context.fill();
             }
@@ -446,7 +448,7 @@ function UpdatePosition() {
     //Down
     if(x==2)
     {
-        if(shape.j<9 && board[shape.i][shape.j+1]!=4 && board[shape.i][shape.j+1]!=5)
+        if(shape.j<14 && board[shape.i][shape.j+1]!=4 && board[shape.i][shape.j+1]!=5)
         {
             direct = "D";
             shape.j++;
@@ -464,7 +466,7 @@ function UpdatePosition() {
     //Right
     if(x==4)
     {
-        if(shape.i<9 && board[shape.i+1][shape.j]!=4 && board[shape.i+1][shape.j]!=5)
+        if(shape.i<24 && board[shape.i+1][shape.j]!=4 && board[shape.i+1][shape.j]!=5)
         {
             direct = "R";
             shape.i++;
@@ -481,7 +483,7 @@ function UpdatePosition() {
     {
         pac_color="green";
     }
-    if(score==100) //TODO: change this
+    if(score==numOfBalls) //TODO: change this
     {
         window.clearInterval(interval);
         if (window.confirm("Winner!!! \n your score:" + score +"\n Another game?")){

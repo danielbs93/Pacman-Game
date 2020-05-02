@@ -94,10 +94,10 @@
       <div class="my-modal-body">
         <div class="keys">
           <h2 class="settingsLabels">Keys to play:  <label class="labelBall" style="color: red;">  **by default the keys will be keyboard arrows</label></h2> 
-          <input type="text" id="keyUp" placeholder="Up" class="input">
-          <input type="text" id="keyDown" placeholder="Down" class="input">
-          <input type="text" id="keyLeft" placeholder="Left" class="input">
-          <input type="text" id="keyRight" placeholder="Right" class="input">
+          <input type="text" id="keyUp" onkeydown="setKeyCodeUp(event)" placeholder="Up" class="input">
+          <input type="text" id="keyDown" onkeydown="setKeyCodeDown(event)" placeholder="Down" class="input">
+          <input type="text" id="keyLeft" onkeydown="setKeyCodeLeft(event)" placeholder="Left" class="input">
+          <input type="text" id="keyRight" onkeydown="setKeyCodeRight(event)" placeholder="Right" class="input">
         </div>
         <h2 class="settingsLabels">Number of balls:</h2>
         <div class="slidecontainer">
@@ -132,7 +132,7 @@
   
 </div>
 <div class="gamePage">
-  <table>
+  <table class="gameRowDetails">
     <tr>
       <td>
         <div class="player_name">
@@ -159,9 +159,9 @@
       </td>
     </tr> 
   </table>
-  <td>
-    <canvas class="canvas" id="canvas2" height="670" width="700"></canvas>
-  </td>
+  <div class="canvasWrapper">
+    <canvas class="canvas" id="canvas2" height="654" width="1200"></canvas>
+  </div>
 </div>
 </body>
 
