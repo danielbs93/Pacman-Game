@@ -1,18 +1,18 @@
 //Fields
-//var context = canvas.getContext("2d");
+var context;
 var shape=new Object();
 var board;
-var score;
+var score = 0;
 var pac_color;
 var start_time;
 var time_elapsed;
 var interval;
 var pac;
-var pacLife;
+var pacLife = 1;
 var direct;
 
-
-
+//Pacman Objects
+var pacman;
 
 
 //Number of food/balls
@@ -45,10 +45,14 @@ var ballLarge;//25 points - 10%
 var numOfMonsters;//from settings
 
 //Monsters types
-var redMonsters;
-var blueMonsters;
-var pinkMonsters;
-var yellowMonsters;
+var monsterOne = new Image();
+monsterOne.src = "resource\\ghost1.png";
+var monsterTwo = new Image();
+monsterTwo.src = "resource\\ghost2.png";;
+var monsterThree = new Image();
+monsterThree.src = "resource\\ghost3.png";;
+var monsterFour = new Image();
+monsterFour.src = "resource\\ghost4.png";;
 
 
 $(document).ready(function(){
@@ -72,6 +76,7 @@ $(document).ready(function(){
     //     $(".register").show();
     //     $(".login").hide();
     // })
+    $(".gamePage").hide();
     $(".wrapper").hide();
     $(".settingsPage").show();
 
@@ -249,19 +254,7 @@ function randomConfigurations() {
     timeForGame = 60;
 
     //Number of monsters
-    numOfMonsters = 2;
-
-    blueMonsters = new Image();
-    blueMonsters.src = "resource\\ghost4.png";
-
-    redMonsters = new Image();
-    redMonsters.src = "resource\\ghost2.png";
-
-    pinkMonsters = new Image();
-    pinkMonsters.src = "resource\\ghost3.png";
-
-    yellowMonsters = new Image();
-    yellowMonsters.src = "resource\\ghost1.png";
+    numOfMonsters = 4;
 
     $(".settingsPage").hide();
     $(".gamePage").show();
@@ -332,10 +325,11 @@ function setGameConfigurations() {
  */
 function Start() {
     $(".canvas2").show();
+    pacman = document.getElementById("pacmanRight");
     board = new Array()
-    score = 0;
+    // score = 0;
     takenBalls = 0;
-    pacLife = 5;
+    // pacLife = 5;
     // pac_color="yellow";
     var cnt = 375;
     var food_remain = numOfBalls;
@@ -392,7 +386,10 @@ function Start() {
     addEventListener("keyup", function (e) {
         keysDown[e.keyCode] = false;
     }, false);
-    interval=setInterval(UpdatePosition, 120);
+    if (interval == null) {
+        interval=setInterval(UpdatePosition, 120);
+    }
+    initMonstersPositions();
 }
 
 function findRandomEmptyCell(board){
@@ -409,18 +406,34 @@ function findRandomEmptyCell(board){
 function GetKeyPressed() {
     //Up
     if (keysDown[keyUp]) {
+        pacman = document.getElementById("pacmanUp");
+        $('#pacmanDown').css('display','none');
+        $('#pacmanLeft').css('display','none');
+        $('#pacmanRight').css('display','none');
         return 1;
     }
     //Down
     if (keysDown[keyDown]) { 
+        pacman = document.getElementById("pacmanDown");
+        $('#pacmanUp').css('display','none');
+        $('#pacmanLeft').css('display','none');
+        $('#pacmanRight').css('display','none');
         return 2;
     }
     //Left
     if (keysDown[keyLeft]) { 
+        pacman = document.getElementById("pacmanLeft");
+        $('#pacmanDown').css('display','none');
+        $('#pacmanUp').css('display','none');
+        $('#pacmanRight').css('display','none');
         return 3;
     }
     //Right
     if (keysDown[keyRight]) { 
+        pacman = document.getElementById("pacmanRight");
+        $('#pacmanDown').css('display','none');
+        $('#pacmanLeft').css('display','none');
+        $('#pacmanUp').css('display','none');
         return 4;
     }
 }
@@ -430,9 +443,10 @@ function Draw(direct) {
         direct = "R";
     }
     var canvas = document.getElementById("canvas2");
-    var context = canvas.getContext("2d");
-    let pac = new Image();
-    pac.src = "resource\\Pacman"+direct+".png";
+    context = canvas.getContext("2d");
+    // pacmanCanvas.show();
+    // let pac = new Image();
+    // pac.src = "resource\\pacman"+direct+".gif";
     canvas.width=canvas.width;
     lblScore.value = score;
     lblTime.value = time_elapsed;
@@ -443,8 +457,11 @@ function Draw(direct) {
             var center = new Object();
             center.x = i * 48 + 24;
             center.y = j * 43 + 21.5;
-            if (board[i][j] == 3) {  
-                context.drawImage(pac, center.x -20,center.y-20);    
+            if (board[i][j] == 3) {
+                
+                // pacman.style.display = 'block';
+                // $('#'+pacman.id).css('display','block');                 
+                context.drawImage(pacman, center.x -20,center.y-20);    
             } else if (board[i][j] == 4) {
                 context.beginPath();
                 context.arc(center.x, center.y, 3.5, 0, 2 * Math.PI); // half circle
@@ -471,18 +488,39 @@ function Draw(direct) {
                 context.fillStyle = "grey"; //color 
                 context.fill();
             }
+            if (numOfMonsters >= 1) {
+                if (monsterShapeOne.i == i && monsterShapeOne.j == j) {
+                    context.drawImage(monsterOne,center.x-20,center.y-20);
+                }
+            }
+            if (numOfMonsters >= 2) {
+                if (monsterShapeTwo.i == i && monsterShapeTwo.j == j) {
+                    context.drawImage(monsterTwo,center.x-20,center.y-20);
+                }
+            }
+            if (numOfMonsters >= 3) {
+                if (monsterShapeThree.i == i && monsterShapeThree.j == j) {
+                    context.drawImage(monsterThree,center.x-20,center.y-20);
+                }
+            }
+            if (numOfMonsters >= 4) {
+                if (monsterShapeFour.i == i && monsterShapeFour.j == j) {
+                    context.drawImage(monsterFour,center.x-20,center.y-20);
+                }
+            }
          }
         }
-        context.drawImage(redMonsters, 0,0);
-        context.drawImage(blueMonsters, 60 ,0);
-        context.drawImage(pinkMonsters, 120 ,0);
-        context.drawImage(yellowMonsters, 180 ,0);
+        // context.drawImage(monsterOne, 0,0);
+        // context.drawImage(monsterTwo, 60 ,0);
+        // context.drawImage(monsterThree, 120 ,0);
+        // context.drawImage(monsterFour, 180 ,0);
     }
 
 
 function UpdatePosition() {
     board[shape.i][shape.j]=0;
-    var x = GetKeyPressed()
+    var x = GetKeyPressed();
+    monstersStartMoving();
     //Up
     if(x==1)
     {
@@ -550,9 +588,142 @@ function UpdatePosition() {
             window.alert("See you next time :)")
         }
     }
-    else
+    else if (pacLife > 0)
     {
         Draw(direct);
+        if (checkPacmanColisions()) {
+            alert("You got eaten!");
+            pacLife--;
+            if (pacLife > 0) {
+                Start();
+            }
+        }
+    } else {
+        alert("You lost :( try again");
+        // interval = setInterval(null,0);
+        clearInterval(interval);
+        $(".gamePage").hide();
+        initiateNewGame();
+    }
+}
+
+function initiateNewGame() {
+    var canvas = document.getElementById("canvas2");
+    context.clearRect(0,0,canvas.width,canvas.height);
+    score = 0;
+    pacLife = 5;
+    interval = null;
+    $(".settingsPage").show();
+}
+/**---------------------MONSTERS------------------------------ */
+var monsterShapeOne = new Object();
+var monsterShapeTwo = new Object();
+var monsterShapeThree = new Object();
+var monsterShapeFour = new Object();
+
+function initMonstersPositions() {
+    if (numOfMonsters >= 1) {
+        monsterShapeOne.i = 0;
+        monsterShapeOne.j = 0;
+    }
+    if (numOfMonsters >= 2) {
+        monsterShapeTwo.i = 0;
+        monsterShapeTwo.j = 0;
+    }
+    if (numOfMonsters >= 3){
+        monsterShapeThree.i = 0;
+        monsterShapeThree.j = 0;
+    }
+    if (numOfMonsters >= 4) {
+        monsterShapeFour.i = 0;
+        monsterShapeFour.j = 0;
+    }
+}
+
+function monstersStartMoving() {
+    debugger;
+    let direction = getRandomDirection();
+    if (numOfMonsters >= 1) {
+        while(!updateMonsterPosition(monsterShapeOne,direction)) {
+            direction = getRandomDirection();
+        }
+    }
+    if (numOfMonsters >= 2) {
+        let direction = getRandomDirection();
+        while(!updateMonsterPosition(monsterShapeTwo,direction)) {
+            direction = getRandomDirection();
+        }
+    }
+    if (numOfMonsters >= 3){
+        let direction = getRandomDirection();
+        while(!updateMonsterPosition(monsterShapeThree,direction)) {
+            direction = getRandomDirection();
+        }
+    }
+    if (numOfMonsters >= 4) {
+        let direction = getRandomDirection();
+        while(!updateMonsterPosition(monsterShapeFour,direction)) {
+            direction = getRandomDirection();
+        }
+    }
+}
+
+function getRandomDirection() {
+    return Math.floor(Math.random() * Math.floor(4)) + 1;
+}
+
+function updateMonsterPosition(monster,direction) {
+   //Up
+   if(direction==1)
+   {
+       if(monster.j>0 && board[monster.i][monster.j-1]!=1 && board[monster.i][monster.j-1]!=2)
+       {
+        monster.j--;
+        return true;
+       }
+   }
+   //Down
+   if(direction==2)
+   {
+       if(monster.j<14 && board[monster.i][monster.j+1]!=1 && board[monster.i][monster.j+1]!=2)
+       {
+        monster.j++;
+        return true;
+       }
+   }
+   //Left
+   if(direction==3)
+   {
+       if(monster.i>0 && board[monster.i-1][monster.j]!=1 && board[monster.i-1][monster.j]!=2)
+       {
+           monster.i--;
+           return true;
+       }
+   }
+   //Right
+   if(direction==4)
+   {
+       if(monster.i<24 && board[monster.i+1][monster.j]!=1 && board[monster.i+1][monster.j]!=2)
+       {
+           monster.i++;
+           return true;
+       }
+   }
+   return false;
+}
+
+function checkPacmanColisions() {
+    if (shape.i == monsterShapeOne.i && shape.j == monsterShapeOne.j){
+        return true;
+    }
+    else if (shape.i == monsterShapeTwo.i && shape.j == monsterShapeTwo.j){
+        return true;
+    }
+    else if (shape.i == monsterShapeThree.i && shape.j == monsterShapeThree.j){
+        return true;
+    }
+    else if (shape.i == monsterShapeFour.i && shape.j == monsterShapeFour.j){
+        return true;
     }
 }
 

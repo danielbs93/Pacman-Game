@@ -336,7 +336,7 @@ body{
 }
 
 .gamePage{
-  background:antiquewhite;
+  background:black;
 }
 
 .gamePage .player_name,
@@ -379,4 +379,25 @@ body{
   padding: 2px;
   border: 2px solid grey;
 }
+
+/*Pacman gifs*/
+.pacmanCanvas {
+  display: none;
+  background-image: none;
+}
+
+.pacmanUp {
+  display: none;
+}
+.pacmanDown {
+  display: none;
+}
+.pacmanLeft {
+  display: none;
+}
+.pacmanRight {
+  display: none;
+}
+
+
 
