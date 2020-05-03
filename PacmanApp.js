@@ -7,13 +7,18 @@ var pac_color;
 var start_time;
 var time_elapsed;
 var interval;
-var pac;
 var pacLife;
 var direct;
 
+//images 
+var strawberry;
+var wall;
+var heart;
+var pac;
 
-
-
+//sounds
+var fruitMusic;
+var myMusic;
 
 //Number of food/balls
 var numOfBalls;
@@ -332,28 +337,64 @@ function setGameConfigurations() {
  */
 function Start() {
     $(".canvas2").show();
-    board = new Array()
+    board = new Array();
     score = 0;
     takenBalls = 0;
     pacLife = 5;
-    // pac_color="yellow";
     var cnt = 375;
     var food_remain = numOfBalls;
+
+    // fruitMusic = new sound("resourcw//Fruit.mp3");
+    myMusic = new sound("resource//soundtrack.mp3");
+    myMusic.play();
+    // myMusic.volume = 0.2;
+
     ballSmall = numOfBalls*0.6;
     ballMedium = numOfBalls*0.3;
     ballLarge = numOfBalls*0.1;
     var pacman_remain = 1;
+    let k = Math.floor(Math.random() * 4) + 1;  
+
     start_time= new Date();
     for (var i = 0; i < 25; i++) {
         board[i] = new Array();
         for (var j = 0; j < 15; j++) {
-            if ((i==8 && j==1) || (i==2 && j==7))
-            {
+
+            if ((i==3 && j==3) || (i==3 && j==4) || (i==5 && j==4)|| (i==8 && j==3) 
+            || (i==8 && j==4) || (i==3 && j==2) || (i==4 && j==2) || (i==5 && j==2) ||(i==6 && j==2) ||
+            (i==7 && j==2) ||(i==8 && j==2) || (i==3 && j==5)|| (i==4 && j==5) || (i==5 && j==5) ||
+            
+            (i==3 && j==9) || (i==4 && j==9) || (i==5 && j==9) || (i==3 && j==10)|| (i==3 && j==11) 
+            || (i==3 && j==12) || (i==4 && j==12) || (i==8 && j==11) || (i==5 && j==12) ||(i==6 && j==12) ||
+            (i==7 && j==12) ||(i==8 && j==12) || (i==8 && j==10)|| (i==5 && j==10) ||
+
+            (i==16 && j==2) || (i==17 && j==2) || (i==18 && j==2) || (i==19 && j==2)|| (i==20 && j==2) 
+            || (i==21 && j==2) || (i==16 && j==3) || (i==16 && j==4) || (i==21 && j==3) ||(i==21 && j==4) ||
+            (i==21 && j==5) ||(i==20 && j==5) || (i==19 && j==5)|| (i==19 && j==4)||
+            
+            (i==16 && j==12) || (i==17 && j==12) || (i==18 && j==12) || (i==19 && j==12)|| (i==20 && j==12) 
+            || (i==21 && j==12) || (i==16 && j==11) || (i==16 && j==10) || (i==21 && j==11) ||(i==21 && j==10) ||
+            (i==21 && j==9) ||(i==20 && j==9) || (i==19 && j==9)|| (i==19 && j==10)){
+
+            
                 board[i][j] = 1;    //wall
             }
-            else if ((i==8 && j==2) || (i==7 && j==1) || (i==1 && j==7) || (i==2 && j==8)){
-                board[i][j] = 2;    //wall
+            else if(i==4 && j==10){
+                board[i][j] = 2;
+                // board[4][4] = 7;
+            } 
+            // else if((i==4 && j==4) && k==2){
+            //     board[i][j] = 2;
+            //     board[4][10] = 7;
+            // }
+            else if(i==20 && j==4){
+                board[i][j] =7;
             }
+            // else if((i==20 && j==10) && k==4){
+            //     board[i][j] = 2;
+            //     board[20][4] = 7;
+            // }
+            // else if((!(i==4 && j == 10)) && (!(i==4 && j==4)) && (!(i==20 && j==10)) && (!(i==20 && j==4))){
             else{
             var randomNum = Math.random();
             if (randomNum <= 1.0 * food_remain / cnt) {
@@ -395,6 +436,21 @@ function Start() {
     interval=setInterval(UpdatePosition, 120);
 }
 
+function generateUpLeftwall(board){
+    for (var i=3; i<9; i++){
+        board[i][2]=2;
+    }
+    for (var i=2; i<5; i++){
+        board[8][i]=2;
+    }
+    for (var i=4; i<6; i++){
+        board[i][5]=2;
+    }
+    for (var i=3; i<6; i++){
+        board[3][i]=2;
+    }
+}
+
 function findRandomEmptyCell(board){
     var i = Math.floor((Math.random() * 9) + 1);
     var j = Math.floor((Math.random() * 9) + 1);
@@ -431,8 +487,19 @@ function Draw(direct) {
     }
     var canvas = document.getElementById("canvas2");
     var context = canvas.getContext("2d");
+
     let pac = new Image();
     pac.src = "resource\\Pacman"+direct+".png";
+
+    let wall = new Image();
+    wall.src = "resource\\wall.png";
+
+    let strawberry = new Image();
+    strawberry.src = "resource\\strawberry.png";
+
+    let heart = new Image();
+    heart.src = "resource\\heart.png";
+
     canvas.width=canvas.width;
     lblScore.value = score;
     lblTime.value = time_elapsed;
@@ -447,29 +514,25 @@ function Draw(direct) {
                 context.drawImage(pac, center.x -20,center.y-20);    
             } else if (board[i][j] == 4) {
                 context.beginPath();
-                context.arc(center.x, center.y, 3.5, 0, 2 * Math.PI); // half circle
+                context.arc(center.x, center.y, 5, 0, 2 * Math.PI); // half circle
                 context.fillStyle = ballColor1; //color 
                 context.fill();
             } else if (board[i][j] == 5) {
                 context.beginPath();
-                context.arc(center.x, center.y, 3.5, 0, 2 * Math.PI); // half circle
+                context.arc(center.x, center.y, 5, 0, 2 * Math.PI); // half circle
                 context.fillStyle = ballColor2; //color 
                 context.fill();
             } else if (board[i][j] == 6) {
                 context.beginPath();
-                context.arc(center.x, center.y, 3.5, 0, 2 * Math.PI); // half circle
+                context.arc(center.x, center.y, 5, 0, 2 * Math.PI); // half circle
                 context.fillStyle = ballColor3; //color 
                 context.fill();
             }else if (board[i][j] == 1) {
-                context.beginPath();
-                context.rect(center.x-6.6, center.y-6.6, 15, 60);
-                context.fillStyle = "grey"; //color 
-                context.fill();
+                context.drawImage(wall, center.x -20,center.y-20); 
             }else if (board[i][j] == 2) {
-                context.beginPath();
-                context.rect(center.x-6.6, center.y-6.6, 60, 15);
-                context.fillStyle = "grey"; //color 
-                context.fill();
+                context.drawImage(strawberry, center.x -20,center.y-20); 
+            }else if (board[i][j] == 7) {
+                context.drawImage(heart, center.x -20,center.y-20); 
             }
          }
         }
@@ -481,12 +544,13 @@ function Draw(direct) {
 
 
 function UpdatePosition() {
+    console.log(shape.i);
     board[shape.i][shape.j]=0;
     var x = GetKeyPressed()
     //Up
     if(x==1)
     {
-        if(shape.j>0 && board[shape.i][shape.j-1]!=1 && board[shape.i][shape.j-1]!=2)
+        if(shape.j>0 && board[shape.i][shape.j-1]!=1 )
         {
             direct = "U";
             shape.j--;
@@ -495,7 +559,7 @@ function UpdatePosition() {
     //Down
     if(x==2)
     {
-        if(shape.j<14 && board[shape.i][shape.j+1]!=1 && board[shape.i][shape.j+1]!=2)
+        if(shape.j<14 && board[shape.i][shape.j+1]!=1)
         {
             direct = "D";
             shape.j++;
@@ -504,7 +568,7 @@ function UpdatePosition() {
     //Left
     if(x==3)
     {
-        if(shape.i>0 && board[shape.i-1][shape.j]!=1 && board[shape.i-1][shape.j]!=2)
+        if(shape.i>0 && board[shape.i-1][shape.j]!=1)
         {
             direct = "L";
             shape.i--;
@@ -513,7 +577,7 @@ function UpdatePosition() {
     //Right
     if(x==4)
     {
-        if(shape.i<24 && board[shape.i+1][shape.j]!=1 && board[shape.i+1][shape.j]!=2)
+        if(shape.i<24 && board[shape.i+1][shape.j]!=1)
         {
             direct = "R";
             shape.i++;
@@ -534,6 +598,14 @@ function UpdatePosition() {
         takenBalls++;
         score = score+25;
     }
+    if(board[shape.i][shape.j]==2)
+    {
+        score = score+100; // strwaberry
+    }
+    if(board[shape.i][shape.j]==7)
+    {
+        pacLife++; // heart
+    }
     board[shape.i][shape.j]=3;
     var currentTime=new Date();
     time_elapsed=(currentTime-start_time)/1000;
@@ -543,6 +615,7 @@ function UpdatePosition() {
     }
     if(takenBalls==numOfBalls) 
     {
+        myMusic.stop();
         window.clearInterval(interval);
         if (window.confirm("Winner!!! \n your score:" + score +"\n Another game?")){
             Start();
@@ -554,6 +627,21 @@ function UpdatePosition() {
     {
         Draw(direct);
     }
+}
+
+function sound(src) {
+    this.sound = document.createElement("audio");
+    this.sound.src = src;
+    this.sound.setAttribute("preload", "auto");
+    this.sound.setAttribute("controls", "none");
+    this.sound.style.display = "none";
+    document.body.appendChild(this.sound);
+    this.play = function(){
+        this.sound.play();
+    }
+    this.stop = function(){
+        this.sound.pause();
+    }    
 }
 
 
