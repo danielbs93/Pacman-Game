@@ -15,10 +15,11 @@ var direct;
 var pacman;
 
 //images 
-var strawberry;
+var clock;
 var wall;
 var heart;
 var pac;
+var strawberry;
 
 //sounds
 var fruitMusic;
@@ -352,7 +353,9 @@ function Start() {
     ballMedium = numOfBalls*0.3;
     ballLarge = numOfBalls*0.1;
     var pacman_remain = 1;
-    let k = Math.floor(Math.random() * 4) + 1;  
+    let k = Math.floor(Math.random() * 4) + 1;
+    
+    let strawberry_flag = false;
 
     start_time= new Date();
     for (var i = 0; i < 25; i++) {
@@ -393,8 +396,7 @@ function Start() {
             //     board[i][j] = 2;
             //     board[20][4] = 7;
             // }
-            // else if((!(i==4 && j == 10)) && (!(i==4 && j==4)) && (!(i==20 && j==10)) && (!(i==20 && j==4))){
-            else{
+            else if((!(i==0 && j == 0)) && (!(i==24 && j==0)) && (!(i==24 && j==14)) && (!(i==0 && j==14))){
             var randomNum = Math.random();
             if (randomNum <= 1.0 * food_remain / cnt) {
                 if(ballLarge > 0){
@@ -413,6 +415,9 @@ function Start() {
                 shape.j=j;
                 pacman_remain--;
                 board[i][j] = 3;     // pacman
+            }else if(!strawberry_flag){
+                strawberry_flag = true; //strawberry
+                board[i][j] = 8;
             } else {
                 board[i][j] = 0;    //empty cell
             }
@@ -438,20 +443,6 @@ function Start() {
     initMonstersPositions();
 }
 
-function generateUpLeftwall(board){
-    for (var i=3; i<9; i++){
-        board[i][2]=2;
-    }
-    for (var i=2; i<5; i++){
-        board[8][i]=2;
-    }
-    for (var i=4; i<6; i++){
-        board[i][5]=2;
-    }
-    for (var i=3; i<6; i++){
-        board[3][i]=2;
-    }
-}
 
 function findRandomEmptyCell(board){
     var i = Math.floor((Math.random() * 9) + 1);
@@ -512,11 +503,14 @@ function Draw(direct) {
     let wall = new Image();
     wall.src = "resource\\wall.png";
 
-    let strawberry = new Image();
-    strawberry.src = "resource\\strawberry.png";
+    let clock = new Image();
+    clock.src = "resource\\clock.png";
 
     let heart = new Image();
     heart.src = "resource\\heart.png";
+
+    let strawberry = new Image();
+    strawberry.src = "resource\\strawberry.png";
 
     canvas.width=canvas.width;
     lblScore.value = score;
@@ -551,9 +545,11 @@ function Draw(direct) {
             }else if (board[i][j] == 1) {
                 context.drawImage(wall, center.x -20,center.y-20); 
             }else if (board[i][j] == 2) {
-                context.drawImage(strawberry, center.x -20,center.y-20); 
+                context.drawImage(clock, center.x -20,center.y-20); 
             }else if (board[i][j] == 7) {
                 context.drawImage(heart, center.x -20,center.y-20); 
+            }else if (board[i][j] == 8) {
+                context.drawImage(strawberry, center.x -20,center.y-20); 
             }
             if (numOfMonsters >= 1) {
                 if (monsterShapeOne.i == i && monsterShapeOne.j == j) {
@@ -642,15 +638,19 @@ function UpdatePosition() {
     }
     if(board[shape.i][shape.j]==2)
     {
-        score = score+100; // strwaberry
+        start_time.setSeconds(start_time.getSeconds()+30); // clock
     }
     if(board[shape.i][shape.j]==7)
     {
         pacLife++; // heart
     }
+    if(board[shape.i][shape.j]==8)
+    {
+        score = score+50; // strawberry
+    }
     board[shape.i][shape.j]=3;
     var currentTime=new Date();
-    time_elapsed=(currentTime-start_time)/1000;
+    time_elapsed=timeForGame-(currentTime-start_time)/1000;
     if(score>=20&&time_elapsed<=10)
     {
         pac_color="green";
@@ -664,11 +664,27 @@ function UpdatePosition() {
         }else{
             window.alert("See you next time :)")
         }
-    }
-    else if (pacLife > 0)
+    }else if(time_elapsed <= 0.255 ){
+        myMusic.stop();
+        window.clearInterval(interval);
+        if(score >= 100){
+            if (window.confirm("Winner!!! \n your score:" + score +"\n New game?")){
+                initiateNewGame();
+            }else{
+                window.alert("See you next time :)")
+            }
+        }else{
+            if (window.confirm("you are better than " + score + "points!" +"\n New game?")){
+                initiateNewGame();
+            }else{
+                window.alert("See you next time :)")
+            }
+        }
+    }else if (pacLife > 0)
     {
         Draw(direct);
         if (checkPacmanColisions()) {
+            myMusic.stop();
             alert("You got eaten!");
             pacLife--;
             if (pacLife > 0) {
@@ -676,8 +692,9 @@ function UpdatePosition() {
             }
         }
     } else {
-        alert("You lost :( try again");
+        alert("Loser!");
         // interval = setInterval(null,0);
+        myMusic.stop();
         clearInterval(interval);
         $(".gamePage").hide();
         initiateNewGame();
