@@ -24,6 +24,12 @@ var pac;
 var fruitMusic;
 var myMusic;
 var isMusicPlaying = false;
+var myMusicSrc;
+var fruitSrc;
+var extraMusic;
+var extraSrc;
+var deathMusic;
+var deathSrc;
 
 //Number of food/balls
 var numOfBalls;
@@ -73,28 +79,30 @@ var strawberry_eaten;
 $(document).ready(function(){
 
     // $(".gamePage").hide();
-    // $(".settingsPage").hide();
-    // $(".login").hide();
-    // $(".register_li").addClass("active");
+    // $(".settingsGamePageWarrper").hide();
+    // $(".wrapper").hide();
+    // $(".settingsPage").show();
+    $(".settingsPage").hide();
+    $(".login").hide();
+    $(".register_li").addClass("active");
 
-    // $(".login_li").click(function(){
-    //     $(this).addClass("active");
-    //     $(".register_li").removeClass("active");
-    //     $(".login").show();
-    //     $(".register").hide();
+    $(".login_li").click(function(){
+        $(this).addClass("active");
+        $(".register_li").removeClass("active");
+        $(".login").show();
+        $(".register").hide();
 
-    // })
+    })
 
-    // $(".register_li").click(function(){
-    //     $(this).addClass("active");
-    //     $(".login_li").removeClass("active");
-    //     $(".register").show();
-    //     $(".login").hide();
-    // })
-    $(".gamePage").hide();
-    $(".settingsGamePageWarrper").hide();
-    $(".wrapper").hide();
-    $(".settingsPage").show();
+    $(".register_li").click(function(){
+        $(this).addClass("active");
+        $(".login_li").removeClass("active");
+        $(".register").show();
+        $(".login").hide();
+    })
+    // $(".gamePage").hide();
+    // $(".wrapper").hide();
+    // $(".settingsPage").show();
 
 });
 
@@ -227,6 +235,7 @@ function logIn() {
         }
     }
     alert("You have signed in successfully");
+    debugger;
     currentUserName = userName;
     $(".wrapper").hide();
     $(".settingsPage").show();
@@ -344,6 +353,8 @@ function setGameConfigurations() {
  * Play a game after selecting the game settings 
  */
 function Start() {
+    $(".canvas2").height = 50 ;
+    $(".canvas2").width = window.innerWidth;
     $(".canvas2").show();
     pacman = document.getElementById("pacmanRight");
     // board = new Array()
@@ -354,13 +365,34 @@ function Start() {
     var cnt = 375;
     var food_remain = numOfBalls;
 
-    fruitMusic = new sound("resourcw//Fruit.mp3");
-    myMusic = new sound("resource//soundtrack.mp3");
+    myMusic = new Audio();
+    myMusicSrc = document.createElement("source");
+    myMusicSrc.type = "audio/mpeg";
+    myMusicSrc.src = "resource//soundtrack.mp3";
+    myMusic.appendChild(myMusicSrc);
+
     if (!isMusicPlaying){
         myMusic.play();
         isMusicPlaying = true;
     }
-    // myMusic.volume = 0.2;
+
+    fruitMusic = new Audio();
+    fruitSrc = document.createElement("source");
+    fruitSrc.type = "audio/mpeg";
+    fruitSrc.src = "resource//Fruit.mp3";
+    fruitMusic.appendChild(fruitSrc);
+
+    extraMusic = new Audio();
+    extraSrc = document.createElement("source");
+    extraSrc.type = "audio/mpeg";
+    extraSrc.src = "resource//Extra.mp3";
+    extraMusic.appendChild(extraSrc);
+
+    deathMusic = new Audio();
+    deathSrc = document.createElement("source");
+    deathSrc.type = "audio/mpeg";
+    deathSrc.src = "resource//Death.mp3";
+    deathMusic.appendChild(deathSrc);
 
     ballSmall = numOfBalls*0.6;
     ballMedium = numOfBalls*0.3;
@@ -521,7 +553,7 @@ function Draw(direct) {
     lblScore.value = score;
     lblTime.value = time_elapsed;
     lblLife.value = pacLife;
-    lblName = currentUserName;
+    lblName.value = currentUserName;
     for (var i = 0; i < 25; i++) {//---->width = 1200
         for (var j = 0; j < 15; j++) {//---->height = 654
             var center = new Object();
@@ -630,29 +662,35 @@ function UpdatePosition() {
     }
     if(board[shape.i][shape.j]==4 && !colisionDone)
     {
+        fruitMusic.play();
         takenBalls++;
         score = score+5;
     }
     if(board[shape.i][shape.j]==5 && !colisionDone)
     {
+        fruitMusic.play();
         takenBalls++;
         score = score +15;
     }
     if(board[shape.i][shape.j]==6 && !colisionDone)
     {
+        fruitMusic.play();
         takenBalls++;
         score = score+25;
     }
     if(board[shape.i][shape.j]==2 && !colisionDone)
     {
+        extraMusic.play();
         start_time.setSeconds(start_time.getSeconds()+30); // clock
     }
     if(board[shape.i][shape.j]==7 && !colisionDone)
     {
+        extraMusic.play();
         pacLife++; // heart
     }
     if(shape.i == strwberryShape.i && shape.j == strwberryShape.j && !strawberry_eaten && !colisionDone)
     {
+        extraMusic.play();
         score = score+50; // strawberry
         strawberry_eaten = true;
     }
@@ -673,7 +711,7 @@ function UpdatePosition() {
         }else{
             window.alert("See you next time :)")
         }
-    }else if(time_elapsed <= 0.255 ){
+    }else if(time_elapsed <= 0.5 ){
         myMusic.stop();
         isMusicPlaying = false;
         window.clearInterval(interval);
@@ -694,6 +732,8 @@ function UpdatePosition() {
     }else if (pacLife > 0)
     {
         if (colisionDone) {
+            // myMusic.stop();
+            deathMusic.play();
             alert("You got eaten!");
             pacLife--;
             score-=10;
@@ -942,22 +982,6 @@ function monsterAroundStrawberry(monster, direction) {
     return false;
 }
 
-
-/**playing sound of the game */
-function sound(src) {
-    this.sound = document.createElement("audio");
-    this.sound.src = src;
-    this.sound.setAttribute("preload", "auto");
-    this.sound.setAttribute("controls", "none");
-    this.sound.style.display = "none";
-    document.body.appendChild(this.sound);
-    this.play = function(){
-        this.sound.play();
-    }
-    this.stop = function(){
-        this.sound.pause();
-    }    
-}
 
 /**
  * Presents the settings values insereted by the user on the game page
