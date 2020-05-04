@@ -264,7 +264,7 @@ function randomConfigurations() {
     timeForGame = 60;
 
     //Number of monsters
-    numOfMonsters = 4;
+    numOfMonsters = 1;
 
     $(".settingsPage").hide();
     $(".gamePage").show();
@@ -687,9 +687,7 @@ function UpdatePosition() {
             myMusic.stop();
             alert("You got eaten!");
             pacLife--;
-            if (pacLife > 0) {
-                Start();
-            }
+            score-=10;
         }
     } else {
         alert("Loser!");
