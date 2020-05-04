@@ -24,6 +24,12 @@ var strawberry;
 //sounds
 var fruitMusic;
 var myMusic;
+var myMusicSrc;
+var fruitSrc;
+var extraMusic;
+var extraSrc;
+var deathMusic;
+var deathSrc;
 
 //Number of food/balls
 var numOfBalls;
@@ -344,10 +350,31 @@ function Start() {
     var cnt = 375;
     var food_remain = numOfBalls;
 
-    // fruitMusic = new sound("resourcw//Fruit.mp3");
-    myMusic = new sound("resource//soundtrack.mp3");
+    // fruitMusic = new Audio("resourcw//Fruit.mp3");
+    myMusic = new Audio();
+    myMusicSrc = document.createElement("source");
+    myMusicSrc.type = "audio/mpeg";
+    myMusicSrc.src = "resource//soundtrack.mp3";
+    myMusic.appendChild(myMusicSrc);
     myMusic.play();
-    // myMusic.volume = 0.2;
+
+    fruitMusic = new Audio();
+    fruitSrc = document.createElement("source");
+    fruitSrc.type = "audio/mpeg";
+    fruitSrc.src = "resource//Fruit.mp3";
+    fruitMusic.appendChild(fruitSrc);
+
+    extraMusic = new Audio();
+    extraSrc = document.createElement("source");
+    extraSrc.type = "audio/mpeg";
+    extraSrc.src = "resource//Extra.mp3";
+    extraMusic.appendChild(extraSrc);
+
+    deathMusic = new Audio();
+    deathSrc = document.createElement("source");
+    deathSrc.type = "audio/mpeg";
+    deathSrc.src = "resource//Death.mp3";
+    deathMusic.appendChild(deathSrc);
 
     ballSmall = numOfBalls*0.6;
     ballMedium = numOfBalls*0.3;
@@ -623,29 +650,35 @@ function UpdatePosition() {
     }
     if(board[shape.i][shape.j]==4)
     {
+        fruitMusic.play();
         takenBalls++;
         score = score+5;
     }
     if(board[shape.i][shape.j]==5)
     {
+        fruitMusic.play();
         takenBalls++;
         score = score +15;
     }
     if(board[shape.i][shape.j]==6)
     {
+        fruitMusic.play();
         takenBalls++;
         score = score+25;
     }
     if(board[shape.i][shape.j]==2)
     {
+        extraMusic.play();
         start_time.setSeconds(start_time.getSeconds()+30); // clock
     }
     if(board[shape.i][shape.j]==7)
     {
+        extraMusic.play();
         pacLife++; // heart
     }
     if(board[shape.i][shape.j]==8)
     {
+        extraMusic.play();
         score = score+50; // strawberry
     }
     board[shape.i][shape.j]=3;
@@ -664,7 +697,7 @@ function UpdatePosition() {
         }else{
             window.alert("See you next time :)")
         }
-    }else if(time_elapsed <= 0.255 ){
+    }else if(time_elapsed <= 0.5 ){
         myMusic.stop();
         window.clearInterval(interval);
         if(score >= 100){
@@ -685,6 +718,7 @@ function UpdatePosition() {
         Draw(direct);
         if (checkPacmanColisions()) {
             myMusic.stop();
+            deathMusic.play();
             alert("You got eaten!");
             pacLife--;
             score-=10;
@@ -818,21 +852,3 @@ function checkPacmanColisions() {
         return true;
     }
 }
-
-function sound(src) {
-    this.sound = document.createElement("audio");
-    this.sound.src = src;
-    this.sound.setAttribute("preload", "auto");
-    this.sound.setAttribute("controls", "none");
-    this.sound.style.display = "none";
-    document.body.appendChild(this.sound);
-    this.play = function(){
-        this.sound.play();
-    }
-    this.stop = function(){
-        this.sound.pause();
-    }    
-}
-
-
-
