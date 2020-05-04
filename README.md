@@ -1,4 +1,4 @@
-# Pacman - Web enviourmnets development
+# Pacman - Web Enviourmnets Development
 
 //TODO - ADD SITE URL
 
