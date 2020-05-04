@@ -73,28 +73,28 @@ monsterFour.src = "resource\\ghost4.png";;
 
 $(document).ready(function(){
 
-    // $(".gamePage").hide();
-    // $(".settingsPage").hide();
-    // $(".login").hide();
-    // $(".register_li").addClass("active");
-
-    // $(".login_li").click(function(){
-    //     $(this).addClass("active");
-    //     $(".register_li").removeClass("active");
-    //     $(".login").show();
-    //     $(".register").hide();
-
-    // })
-
-    // $(".register_li").click(function(){
-    //     $(this).addClass("active");
-    //     $(".login_li").removeClass("active");
-    //     $(".register").show();
-    //     $(".login").hide();
-    // })
     $(".gamePage").hide();
-    $(".wrapper").hide();
-    $(".settingsPage").show();
+    $(".settingsPage").hide();
+    $(".login").hide();
+    $(".register_li").addClass("active");
+
+    $(".login_li").click(function(){
+        $(this).addClass("active");
+        $(".register_li").removeClass("active");
+        $(".login").show();
+        $(".register").hide();
+
+    })
+
+    $(".register_li").click(function(){
+        $(this).addClass("active");
+        $(".login_li").removeClass("active");
+        $(".register").show();
+        $(".login").hide();
+    })
+    // $(".gamePage").hide();
+    // $(".wrapper").hide();
+    // $(".settingsPage").show();
 
 });
 
@@ -227,6 +227,7 @@ function logIn() {
         }
     }
     alert("You have signed in successfully");
+    debugger;
     currentUserName = userName;
     $(".wrapper").hide();
     $(".settingsPage").show();
@@ -340,6 +341,8 @@ function setGameConfigurations() {
  * Play a game after selecting the game settings 
  */
 function Start() {
+    $(".canvas2").height = 50 ;
+    $(".canvas2").width = window.innerWidth;
     $(".canvas2").show();
     pacman = document.getElementById("pacmanRight");
     board = new Array()
@@ -543,7 +546,7 @@ function Draw(direct) {
     lblScore.value = score;
     lblTime.value = time_elapsed;
     lblLife.value = pacLife;
-    lblName = currentUserName;
+    lblName.value = currentUserName;
     for (var i = 0; i < 25; i++) {//---->width = 1200
         for (var j = 0; j < 15; j++) {//---->height = 654
             var center = new Object();
