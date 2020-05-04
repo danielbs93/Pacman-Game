@@ -263,7 +263,7 @@ function randomConfigurations() {
     timeForGame = 60;
 
     //Number of monsters
-    numOfMonsters = 4;
+    numOfMonsters = 1;
 
     $(".settingsPage").hide();
     $(".gamePage").show();
@@ -671,9 +671,7 @@ function UpdatePosition() {
         if (checkPacmanColisions()) {
             alert("You got eaten!");
             pacLife--;
-            if (pacLife > 0) {
-                Start();
-            }
+            score-=10;
         }
     } else {
         alert("You lost :( try again");
