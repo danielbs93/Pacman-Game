@@ -129,7 +129,7 @@
       <div class="my-modal-footer">
         <ul>
         <li><button type="button" onclick="randomConfigurations()" class="settingsButton" data-dismiss="modal">Generate Random</button></li>
-        <li><button type="button" onclick="setGameConfigurations()" class="settingsButton" data-dismiss="modal">Start Game</button></li>
+        <li><button type="button" onclick="setGameConfigurations()" class="settingsButton" data-dismiss="modal">Save Settings</button></li>
         </ul>
       </div>
     </div>
@@ -164,9 +164,38 @@
     </tr> 
   </table>
   <div class="canvasWrapper">
-    <canvas class="canvas" id="canvas2" height="654" width="1200"></canvas>
+    <canvas class="canvas" id="canvas2" height="654" width="1200">
+    </canvas>
   </div>
 </div>
+<div class="settingsGamePageWarrper" >
+  <table class="settingsTable" height="287.7" width="5" >
+    <tr id="keysRow">
+      <strong style="text-decoration: underline;">Settings</strong><br>
+      <label  style="text-decoration: underline;">Key Up: </label> <label class="settingsRows" id="KeysRowUp" type="text"></label> <br>
+      <label  style="text-decoration: underline;">Key Down: </label> <label class="settingsRows" id="KeysRowDown" type="text"></label> <br>
+      <label  style="text-decoration: underline;">Key Left: </label> <label class="settingsRows" id="KeysRowLeft" type="text"></label> <br>
+      <label  style="text-decoration: underline;">Key Right: </label> <label class="settingsRows" id="KeysRowRight" type="text"></label> <br><br>
+    </tr>
+    <tr class="settingsRows" id="foodCounterRow">
+      <label  style="text-decoration: underline;">Number of balls: </label> <label class="settingsRows" id="foodCounter" type="text"></label><br><br>
+    </tr>
+    <tr class="settingsRows" id="ballsColorsRow">
+      <label  style="text-decoration: underline;">5 points food: </label> <span class="dot" id="ball5" ></span><br>
+        <label  style="text-decoration: underline;">15 points food: </label> <span class="dot" id="ball15"></span><br>
+          <label  style="text-decoration: underline;">25 points food: </label> <span class="dot" id="ball25"></span><br>
+    </tr>
+    <tr class="settingsRows" id="gameTimeRow">
+      <label  style="text-decoration: underline;">Game time: </label> <label class="settingsRows" id="time" type="text"></label><br><br>
+    </tr>
+    <tr class="settingsRows" id="monsterNumberRow">
+      <label  style="text-decoration: underline;">Number of monsters: </label> <label class="settingsRows" id="monsterNumber" type="text"></label><br>
+    </tr>
+    <br>
+    <footer id="credits"><Strong> © Daniel Ben-Simon & Eran Toutian </Strong></footer>
+  </table>
+</div>
+
 </body>
 
 </html>

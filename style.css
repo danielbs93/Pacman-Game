@@ -350,16 +350,26 @@ body{
   text-transform: uppercase;
   letter-spacing: 5px;
   font-weight: bold;
+  border: 2px solid grey;
 }
 
 
 .gamePage .btn a{
-  background: #494f57;
-  padding: 10px;
+  background: -webkit-linear-gradient(45deg,red,blue);;
+  padding: 9px 15px 11px 5px;
+  border: 2px solid grey;
   text-align: center;
   text-transform: uppercase;
-  letter-spacing: 5px;
-  font-weight: bold;
+  letter-spacing: 3px;
+  color:black;
+  text-decoration:underline solid black;
+  font-weight: bolder;
+  margin: -12px -14px;
+}
+
+.gamePage .btn a:hover {
+  color:green;
+  text-decoration:underline solid green;
 }
 /*Settings page - color pickers for food of the game*/
 .ballsColorsPicker {
@@ -380,12 +390,8 @@ body{
   border: 2px solid grey;
 }
 
-/*Pacman gifs*/
-.pacmanCanvas {
-  display: none;
-  background-image: none;
-}
 
+/*Pacman imgs*/
 .pacmanUp {
   display: none;
 }
@@ -399,5 +405,25 @@ body{
   display: none;
 }
 
+/*Settings presentation on game page*/
+.settingsGamePageWarrper {
+  background:-webkit-linear-gradient(45deg,#00d3ff,yellow);
+  transform:translate(405.9%,-100.8%);
+  width:19.7%;
+  padding:3px;
+  border:2.2px solid grey;
+}
 
+.settignsRows{
+  padding: 2px;
+  margin: 2px;
+}
+
+.dot {
+  height: 15px;
+  width: 15px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-flex;
+}
 

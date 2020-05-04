@@ -8,7 +8,7 @@ var start_time;
 var time_elapsed;
 var interval;
 var pac;
-var pacLife=1;
+var pacLife=5;
 var direct;
 
 //Pacman Objects
@@ -19,11 +19,11 @@ var clock;
 var wall;
 var heart;
 var pac;
-var strawberry;
 
 //sounds
 var fruitMusic;
 var myMusic;
+var isMusicPlaying = false;
 
 //Number of food/balls
 var numOfBalls;
@@ -64,6 +64,11 @@ monsterThree.src = "resource\\ghost3.png";;
 var monsterFour = new Image();
 monsterFour.src = "resource\\ghost4.png";;
 
+//Strawberry
+var strawberry = new Image();
+strawberry.src = "resource\\strawberry.png";
+var strwberryShape = new Object();
+var strawberry_eaten;
 
 $(document).ready(function(){
 
@@ -87,6 +92,7 @@ $(document).ready(function(){
     //     $(".login").hide();
     // })
     $(".gamePage").hide();
+    $(".settingsGamePageWarrper").hide();
     $(".wrapper").hide();
     $(".settingsPage").show();
 
@@ -268,6 +274,8 @@ function randomConfigurations() {
 
     $(".settingsPage").hide();
     $(".gamePage").show();
+    fillSettingsGamePageData();
+    $(".settingsGamePageWarrper").show();
 }
 
 /* Settings Keys by user choice */
@@ -327,6 +335,8 @@ function setGameConfigurations() {
     }
     $(".settingsPage").hide();
     $(".gamePage").show();
+    fillSettingsGamePageData();
+    $(".settingsGamePageWarrper").show();
     return true;
 }
 
@@ -344,9 +354,12 @@ function Start() {
     var cnt = 375;
     var food_remain = numOfBalls;
 
-    // fruitMusic = new sound("resourcw//Fruit.mp3");
-    // myMusic = new sound("resource//soundtrack.mp3");
-    // myMusic.play();
+    fruitMusic = new sound("resourcw//Fruit.mp3");
+    myMusic = new sound("resource//soundtrack.mp3");
+    if (!isMusicPlaying){
+        myMusic.play();
+        isMusicPlaying = true;
+    }
     // myMusic.volume = 0.2;
 
     ballSmall = numOfBalls*0.6;
@@ -355,7 +368,7 @@ function Start() {
     var pacman_remain = 1;
     let k = Math.floor(Math.random() * 4) + 1;
     
-    let strawberry_flag = false;
+    strawberry_eaten = false;
 
     start_time= new Date();
     for (var i = 0; i < 25; i++) {
@@ -415,9 +428,6 @@ function Start() {
                 shape.j=j;
                 pacman_remain--;
                 board[i][j] = 3;     // pacman
-            }else if(!strawberry_flag){
-                strawberry_flag = true; //strawberry
-                board[i][j] = 8;
             } else {
                 board[i][j] = 0;    //empty cell
             }
@@ -441,6 +451,7 @@ function Start() {
         interval=setInterval(UpdatePosition, 100);
     }
     initMonstersPositions();
+    initStraberryPosition();
 }
 
 
@@ -497,9 +508,6 @@ function Draw(direct) {
     var canvas = document.getElementById("canvas2");
     var context = canvas.getContext("2d");
 
-    let pac = new Image();
-    pac.src = "resource\\Pacman"+direct+".png";
-
     let wall = new Image();
     wall.src = "resource\\wall.png";
 
@@ -508,9 +516,6 @@ function Draw(direct) {
 
     let heart = new Image();
     heart.src = "resource\\heart.png";
-
-    let strawberry = new Image();
-    strawberry.src = "resource\\strawberry.png";
 
     canvas.width=canvas.width;
     lblScore.value = score;
@@ -548,7 +553,8 @@ function Draw(direct) {
                 context.drawImage(clock, center.x -20,center.y-20); 
             }else if (board[i][j] == 7) { // heart
                 context.drawImage(heart, center.x -20,center.y-20); 
-            }else if (board[i][j] == 8) { //strawbary
+            }
+            if (strwberryShape.i == i && strwberryShape.j == j && !strawberry_eaten) { //strawberry
                 context.drawImage(strawberry, center.x -20,center.y-20); 
             }
             if (numOfMonsters >= 1) {
@@ -645,9 +651,10 @@ function UpdatePosition() {
     {
         pacLife++; // heart
     }
-    if(board[shape.i][shape.j]==8)
+    if(shape.i == strwberryShape.i && shape.j == strwberryShape.j && !strawberry_eaten && !colisionDone)
     {
         score = score+50; // strawberry
+        strawberry_eaten = true;
     }
     board[shape.i][shape.j]=3;
     var currentTime=new Date();
@@ -659,6 +666,7 @@ function UpdatePosition() {
     if(takenBalls==numOfBalls) 
     {
         myMusic.stop();
+        isMusicPlaying = false;
         window.clearInterval(interval);
         if (window.confirm("Winner!!! \n your score:" + score +"\n Another game?")){
             Start();
@@ -667,12 +675,14 @@ function UpdatePosition() {
         }
     }else if(time_elapsed <= 0.255 ){
         myMusic.stop();
+        isMusicPlaying = false;
         window.clearInterval(interval);
         if(score >= 100){
             if (window.confirm("Winner!!! \n your score:" + score +"\n New game?")){
                 initiateNewGame();
             }else{
-                window.alert("See you next time :)")
+                window.alert("See you next time :)");
+                initiateNewGame();
             }
         }else{
             if (window.confirm("you are better than " + score + "points!" +"\n New game?")){
@@ -684,25 +694,31 @@ function UpdatePosition() {
     }else if (pacLife > 0)
     {
         if (colisionDone) {
-            myMusic.stop();
             alert("You got eaten!");
             pacLife--;
             score-=10;
+            if (score < 0) {
+                score = 0;
+            }
             initMonstersPositions();
+            resetKeysDown();
         }else {
             monstersStartMoving();
             Draw(direct);
         }
     } else {
         alert("Loser!");
-        // interval = setInterval(null,0);
         myMusic.stop();
-        clearInterval(interval);
+        isMusicPlaying = false;
         initiateNewGame();
     }
 }
-
+/**
+ * This function ending game after pacman lives becomes 0
+ * presents the settings page
+ */
 function initiateNewGame() {
+    clearInterval(interval);
     var canvas = document.getElementById("canvas2");
     var context = canvas.getContext("2d");
     context.clearRect(0,0,canvas.width,canvas.height);
@@ -710,7 +726,18 @@ function initiateNewGame() {
     pacLife = 5;
     interval = null;
     $(".gamePage").hide();
+    $(".settingsGamePageWarrper").hide();
     $(".settingsPage").show();
+}
+/**
+ * Resets boolean values of 'keysDown' 
+ * After pacman got eaten the last key pressed boolean value is still true
+ */
+function resetKeysDown() {
+    keysDown[keyUp] = false;
+    keysDown[keyDown] = false;
+    keysDown[keyLeft] = false;
+    keysDown[keyRight] = false;
 }
 /**---------------------MONSTERS------------------------------ */
 var monsterShapeOne = new Object();
@@ -791,6 +818,9 @@ function monstersStartMoving() {
             direction = getRandomDirection();
         }
     }
+    //strawberry
+    direction = getRandomDirection();
+    updateStrawberryPosition(direction);
 }
 
 /**Return random number between 1 to 4 that represents direction movement of a monster */
@@ -856,21 +886,102 @@ function checkPacmanColisions() {
     }
 }
 
-/**playing sound of the game */
-// function sound(src) {
-//     this.sound = document.createElement("audio");
-//     this.sound.src = src;
-//     this.sound.setAttribute("preload", "auto");
-//     this.sound.setAttribute("controls", "none");
-//     this.sound.style.display = "none";
-//     document.body.appendChild(this.sound);
-//     this.play = function(){
-//         this.sound.play();
-//     }
-//     this.stop = function(){
-//         this.sound.pause();
-//     }    
-// }
+/**--------Strawberry initialization -------------------*/
+function initStraberryPosition() {
+    let corner = getRandomDirection();
+    setMonsterStartPosition(strwberryShape,corner);
+}
 
+function updateStrawberryPosition(direction) {
+    while(!updateMonsterPosition(strwberryShape,direction) && !monstersAroundStrawberry(direction)) {
+        direction = getRandomDirection();
+    }
+}
+
+function monstersAroundStrawberry(direction) {
+    if (numOfMonsters >=1 && monsterAroundStrawberry(monsterShapeOne,direction)) {
+            return true;
+    }
+    if (numOfMonsters >=2 && monsterAroundStrawberry(monsterShapeTwo,direction)) {
+            return true;
+    }
+    if (numOfMonsters >=3 && monsterAroundStrawberry(monsterShapeThree,direction)) {
+            return true;
+    }
+    if (numOfMonsters >=4 && monsterAroundStrawberry(monsterShapeFour,direction)) {
+            return true;
+    }
+    return false;
+}
+
+function monsterAroundStrawberry(monster, direction) {
+    //up
+    if (direction==1) {
+        if (monster.i == strwberryShape.i && strwberryShape.j-1==monster.j) {
+            return true;
+        }
+    }
+    //down
+    if (direction==2) {
+        if (monster.i == strwberryShape.i && strwberryShape.j+1==monster.j) {
+            return true;
+        }
+    }
+    //left
+    if (direction==3) {
+        if (monster.i == strwberryShape.i-1 && strwberryShape.j==monster.j) {
+            return true;
+        }
+    }
+    //right
+    if (direction==4) {
+        if (monster.i == strwberryShape.i+1 && strwberryShape.j==monster.j) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+/**playing sound of the game */
+function sound(src) {
+    this.sound = document.createElement("audio");
+    this.sound.src = src;
+    this.sound.setAttribute("preload", "auto");
+    this.sound.setAttribute("controls", "none");
+    this.sound.style.display = "none";
+    document.body.appendChild(this.sound);
+    this.play = function(){
+        this.sound.play();
+    }
+    this.stop = function(){
+        this.sound.pause();
+    }    
+}
+
+/**
+ * Presents the settings values insereted by the user on the game page
+ */
+function fillSettingsGamePageData() {
+    //keys
+    document.getElementById("KeysRowUp").innerHTML = keyUp;
+    document.getElementById("KeysRowDown").innerHTML = keyDown;
+    document.getElementById("KeysRowLeft").innerHTML = keyLeft;
+    document.getElementById("KeysRowRight").innerHTML = keyRight;
+
+    //num of balls
+    document.getElementById("foodCounter").innerHTML = numOfBalls;
+
+    //balls color
+    document.getElementById("ball5").style.backgroundColor = ballColor1;
+    document.getElementById("ball15").style.backgroundColor = ballColor2;
+    document.getElementById("ball25").style.backgroundColor = ballColor3;
+
+    //game time
+    document.getElementById("time").innerHTML = timeForGame;
+
+    //num of monsters
+    document.getElementById("monsterNumber").innerHTML = numOfMonsters;
+}
 
 
