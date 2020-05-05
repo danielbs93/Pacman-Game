@@ -311,7 +311,7 @@ function randomConfigurations() {
     ballColor3 = document.getElementById("ball3").value;//green - 10%
 
     //Game Time
-    timeForGame = 10;
+    timeForGame = 60;
 
     //Number of monsters
     numOfMonsters = 1;
