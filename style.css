@@ -12,6 +12,10 @@
 
 body{
   background: #8d8c8c;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
 }
 
 .about .btn {
@@ -413,6 +417,11 @@ body{
   padding:3px;
   border:2.2px solid grey;
 }
+
+/* .settingsTable {
+  height: 44%;
+  width: 0.42%;
+} */
 
 .settignsRows{
   padding: 2px;
