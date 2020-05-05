@@ -31,6 +31,12 @@ var extraSrc;
 var deathMusic;
 var deathSrc;
 var isMusicPlaying = false;
+var myMusicSrc;
+var fruitSrc;
+var extraMusic;
+var extraSrc;
+var deathMusic;
+var deathSrc;
 
 //Number of food/balls
 var numOfBalls;
@@ -236,6 +242,7 @@ function logIn() {
         }
     }
     alert("You have signed in successfully");
+    debugger;
     currentUserName = userName;
     $(".wrapper").hide();
     $(".settingsPage").show();
@@ -381,6 +388,8 @@ function setGameConfigurations() {
  * Play a game after selecting the game settings 
  */
 function Start() {
+    $(".canvas2").height = 50 ;
+    $(".canvas2").width = window.innerWidth;
     $(".canvas2").show();
     pacman = document.getElementById("pacmanRight");
     // board = new Array()
@@ -419,7 +428,24 @@ function Start() {
         myMusic.play();
         isMusicPlaying = true;
     }
-    // myMusic.volume = 0.2;
+
+    fruitMusic = new Audio();
+    fruitSrc = document.createElement("source");
+    fruitSrc.type = "audio/mpeg";
+    fruitSrc.src = "resource//Fruit.mp3";
+    fruitMusic.appendChild(fruitSrc);
+
+    extraMusic = new Audio();
+    extraSrc = document.createElement("source");
+    extraSrc.type = "audio/mpeg";
+    extraSrc.src = "resource//Extra.mp3";
+    extraMusic.appendChild(extraSrc);
+
+    deathMusic = new Audio();
+    deathSrc = document.createElement("source");
+    deathSrc.type = "audio/mpeg";
+    deathSrc.src = "resource//Death.mp3";
+    deathMusic.appendChild(deathSrc);
 
     ballSmall = numOfBalls*0.6;
     ballMedium = numOfBalls*0.3;
@@ -581,7 +607,7 @@ function Draw(direct) {
     lblScore.value = score;
     lblTime.value = time_elapsed;
     lblLife.value = pacLife;
-    lblName = currentUserName;
+    lblName.value = currentUserName;
     for (var i = 0; i < 25; i++) {//---->width = 1200
         for (var j = 0; j < 15; j++) {//---->height = 654
             var center = new Object();
